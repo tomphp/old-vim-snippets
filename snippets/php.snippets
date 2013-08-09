@@ -436,9 +436,9 @@ snippet static_var
 		$$1 = ${2};
 	}
 snippet unittest
-	namespace $1Test\$2;
+	namespace {$1}Tests\{$2};
 	
-	use $1\$2\$3;
+	use $1\$2\{$3};
 	
 	/**
 	 * Unit tests for {@see $3}.
@@ -447,9 +447,9 @@ snippet unittest
 	 *
 	 * @author Tom Oram <tom@scl.co.uk>
 	 */ 
-	class {$3}Test extends \PHPUnit_Framework_TestCase
+	class $3Test extends \PHPUnit_Framework_TestCase
 	{
-		protected $$4;
+		protected ${$4};
 	
 		/**
 		 * Set up the instance to be tested.
@@ -461,7 +461,7 @@ snippet unittest
 			$this->$4 = new $3();
 		}
 	
-		public function test$5()
+		public function test{$5}()
 		{
 	
 		}
