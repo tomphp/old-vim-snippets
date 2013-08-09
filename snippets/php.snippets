@@ -435,3 +435,34 @@ snippet static_var
 	if (is_null($$1)){
 		$$1 = ${2};
 	}
+snippet unittest
+	namespace $1Test\$2;
+	
+	use $1\$2\$3;
+	
+	/**
+	 * Unit tests for {@see $3}.
+	 *
+	 * @covers $1\$2\$3
+	 *
+	 * @author Tom Oram <tom@scl.co.uk>
+	 */ 
+	class {$3}Test extends \PHPUnit_Framework_TestCase
+	{
+		protected $$4;
+	
+		/**
+		 * Set up the instance to be tested.
+		 *
+		 * @return void
+		 */
+		protected function setUp()
+		{
+			$this->$4 = new $3();
+		}
+	
+		public function test$5()
+		{
+	
+		}
+	}
