@@ -50,24 +50,54 @@ snippet m
 	{
 		${3}
 	}
+# public method
+snippet pubm
+	public function ${1:name}($2)
+	{
+		${3}
+	}
+# protected method
+snippet prom
+	protected function ${1:name}($2)
+	{
+		${3}
+	}
+# private method
+snippet prim
+	private function ${1:name}($2)
+	{
+		${3}
+	}
+# public variable
+snippet pubv
+	/**
+	 * @var $1
+	 */
+	public $$2;
+# protected variable
+snippet prov
+	/**
+	 * @var $1
+	 */
+	protected $$2;
+# private variable
+snippet priv
+	/**
+	 * @var $1
+	 */
+	private $$2;
 # setter method
 snippet sm
 	/**
-	 * Sets the value of ${1:foo}
-	 *
 	 * @param  ${2:object} $$1
-	 * @return self
 	 */
 	public function set${3:$1}($2 $$1)
 	{
 		$this->$1 = $$1;
-		return $this;
 	}${4}
 # getter method
 snippet gm
 	/**
-	 * Gets the value of ${1:foo}
-	 *
 	 * @return ${2}
 	 */
 	public function get${3:$1}()
@@ -77,28 +107,12 @@ snippet gm
 # scalar setter method
 snippet ssm
 	/**
-	 * Sets the value of ${1:foo}
-	 *
 	 * @param  ${2:string} $$1
-	 * @return self
 	 */
 	public function set${3:$1}($$1)
 	{
 		$this->$1 = ($2) $$1;
-		return $this;
 	}${4}
-# getter method
-snippet gm
-	/**
-	 * Gets the value of ${1:foo}
-	 *
-	 * @return ${2}
-	 */
-	public function get${3:$1}()
-	{
-		return $this->$1;
-	}${4}
-#setter
 snippet $s
 	${1:$foo}->set${2:Bar}(${3});
 #getter
@@ -435,21 +449,21 @@ snippet static_var
 	if (is_null($$1)){
 		$$1 = ${2};
 	}
-snippet unittest
-	namespace {$1}Tests\{$2};
-	
-	use $1\$2\{$3};
-	
+snippet ut
+	namespace ${1:root_ns}Tests!${2:ns};
+
+	use $1!$2!${3:class};
+
 	/**
 	 * Unit tests for {@see $3}.
 	 *
-	 * @covers $1\$2\$3
+	 * @covers $1!$2!$3
 	 *
 	 * @author Tom Oram <tom@scl.co.uk>
 	 */ 
 	class $3Test extends \PHPUnit_Framework_TestCase
 	{
-		protected ${$4};
+		protected $${4:varname};
 	
 		/**
 		 * Set up the instance to be tested.
@@ -461,8 +475,8 @@ snippet unittest
 			$this->$4 = new $3();
 		}
 	
-		public function test{$5}()
+		public function test${5:test_name}()
 		{
-	
+			${6}
 		}
 	}
