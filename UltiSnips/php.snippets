@@ -11,9 +11,9 @@ endsnippet
 snippet ns "php namespace" b
 namespace ${1:`!p 
 abspath = os.path.abspath(path)
-m = re.search(r'[A-Z].+(?=/)', abspath)
+m = re.search(r'(.*/src/)([^.]*)', abspath)
 if m:
-	snip.rv = m.group().replace('/', '\\')
+	snip.rv = m.group(2).replace('/', '\\')
 `};
 
 endsnippet
@@ -21,25 +21,46 @@ endsnippet
 snippet nc "php namespace and class" b
 namespace ${1:`!p 
 abspath = os.path.abspath(path)
-m = re.search(r'[A-Z].+(?=/)', abspath)
+m = re.search(r'(.*/src/)([^.]*)', abspath)
 if m:
-	snip.rv = m.group().replace('/', '\\')
+	snip.rv = m.group(2).replace('/', '\\')
 `};
 
-/**
- * ${3:@author `whoami`}${4}
- */
-class ${2:`!p
+final class ${2:`!p
 snip.rv = re.match(r'.*(?=\.)', fn).group()
 `}
 {
 }
 endsnippet
 
-snippet st "php static function" b
-${1:public} static function $2($3)
+snippet ni "php namespace and interface" b
+namespace ${1:`!p 
+abspath = os.path.abspath(path)
+m = re.search(r'(.*/src/)([^.]*)', abspath)
+if m:
+	snip.rv = m.group(2).replace('/', '\\')
+`};
+
+interface ${2:`!p
+snip.rv = re.match(r'.*(?=\.)', fn).group()
+`}
 {
-	${4}
+}
+endsnippet
+
+snippet c "class" b
+final class ${2:`!p
+snip.rv = re.match(r'.*(?=\.)', fn).group()
+`}
+{
+}
+endsnippet
+
+snippet i "interface" b
+final class ${2:`!p
+snip.rv = re.match(r'.*(?=\.)', fn).group()
+`}
+{
 }
 endsnippet
 
@@ -50,13 +71,20 @@ ${1:public} function __construct($2)
 }
 endsnippet
 
+snippet li "assign local variable to instance variable" b
+$this->${1} = $$1;
+endsnippet
+
 snippet sg "Setter and Getter" b
 
-/**
- * @var ${3:`!p snip.rv = t[2].capitalize()`}${4}
- */
-${1:protected} $$2;
-
+/** @var ${3:`!p snip.rv = t[2].capitalize()`} */
+${1:private} $$2;
+`!p
+if re.match(r'[A-Z].*', t[3]):
+	snip.rv = ''
+else:
+	snip.rv = '\n    /**\n     * @param ' + t[3] + ' $' + t[2] + '\n     */'
+`
 public function set`!p snip.rv = t[2].capitalize()`(`!p
 if re.match(r'[A-Z].*', t[3]):
 	snip.rv = t[3] + ' '
@@ -64,11 +92,15 @@ else:
 	snip.rv = ''
 `$$2)
 {
-	$this->$2 = $$2;
-
-	return $this;
+	$this->$2 = `!p
+if re.match(r'[A-Z].*', t[3]):
+	snip.rv = ''
+else:
+	snip.rv = '(' + t[3] + ') '
+`$$2;
 }
 
+/** @return $3 */
 public function get`!p snip.rv = t[2].capitalize()`()
 {
 	return $this->$2;
@@ -78,5 +110,32 @@ endsnippet
 snippet if "php if" !b
 if (${1}) {
 	${2}
+}
+endsnippet
+
+snippet p "property" b
+/** @var $1 */
+${2:private} $$3;
+
+endsnippet
+
+snippet m "method" b
+${1:public} function ${2}(${3})
+{
+	${4}
+}
+endsnippet
+
+snippet sm "static method" b
+${1:public} static function ${2}(${3})
+{
+	${4}
+}
+endsnippet
+
+snippet test "phpspec test" b
+public function it_${2}(${3})
+{
+	${4}
 }
 endsnippet
