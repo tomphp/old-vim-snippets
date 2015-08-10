@@ -182,3 +182,21 @@ public function it_${1}(${2})
 	$0
 }
 endsnippet
+
+snippet map "array map" b
+array_map(function($${1:value}) {
+	return $3;
+}, $$2);
+endsnippet
+
+snippet filter "array filter" b
+array_filter($$1, function($${2:value}) {
+	return $3;
+});
+endsnippet
+
+snippet reduce "array reduce" b
+array_reduce($$1, function($${2:carry}, $${3:value}) {
+	return $4;
+});
+endsnippet
