@@ -40,6 +40,33 @@ def uppercase_first(string):
 	if len(string) < 1: return ''
 
 	return string[0].upper() + string[1:]
+
+def split_arg_and_type(arg):
+	parts = map(lambda s: s.strip(), arg.strip().split(' '))
+
+	if len(parts) != 2:
+		return ['mixed', parts[0]]
+
+	return parts
+
+def docblock(args):
+	args = args.strip()
+
+	if args:
+		args = args.split(',')
+		args = map(split_arg_and_type, args)
+	else: 
+		args = []
+
+	max_type_len = reduce(lambda curr, arg: len(arg[0]) if len(arg[0]) > curr else curr, args, 0)
+
+	block = ''
+	for arg in args:
+		block += '\n     * @param ' + arg[0].ljust(max_type_len) +' ' + arg[1]
+
+	if block: block += '\n     *'
+
+	return block
 endglobal
 
 
@@ -158,6 +185,14 @@ ${1:public} function ${2}(${3})
 {
 	${4}
 }
+endsnippet
+
+snippet ms "method signature" b
+/**`!p snip.rv = docblock(t[2])`
+ * @return $3
+ */
+public function $1($2);
+
 endsnippet
 
 snippet sm "setter" b
